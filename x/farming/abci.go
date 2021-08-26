@@ -21,21 +21,9 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) {
 		}
 	}
 
-	params := k.GetParams(ctx)
-
-	lastEpochTime, found := k.GetLastEpochTime(ctx)
-	if !found {
-		k.SetLastEpochTime(ctx, ctx.BlockTime())
-	} else {
-		y, m, d := lastEpochTime.AddDate(0, 0, int(params.EpochDays)).Date()
-		y2, m2, d2 := ctx.BlockTime().Date()
-		if y == y2 && m == m2 && d == d2 {
-			if err := k.DistributeRewards(ctx); err != nil {
-				panic(err)
-			}
-			k.ProcessQueuedCoins(ctx)
-
-			k.SetLastEpochTime(ctx, ctx.BlockTime())
-		}
+	if err := k.DistributeRewards(ctx); err != nil {
+		panic(err)
 	}
+	k.ProcessQueuedCoins(ctx)
+	k.SetLastEpochTime(ctx, ctx.BlockTime())
 }
