@@ -45,3 +45,5 @@ vagrant
 
 # Localnet
 data/
+localnet/
+genesis.json

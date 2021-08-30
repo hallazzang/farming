@@ -177,6 +177,9 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {
 // updates.
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	EndBlocker(ctx, am.keeper)
+	fmt.Println("======================")
+	fmt.Println("gas consumed:", ctx.GasMeter().GasConsumed())
+	fmt.Println("======================")
 	return []abci.ValidatorUpdate{}
 }
 
